@@ -6,9 +6,8 @@ After=multi-user.target
 Type=simple
 Restart=on-failure
 User=pi
-Environment=PYTHONUNBUFFERED=1
 WorkingDirectory=/home/pi/ffs/modules/video
-ExecStart=/home/pi/ffs/modules/video/bin/python -m src.main
+ExecStart=/home/pi/ffs/modules/video/bin/python -mu src.main
 
 [Install]
 WantedBy=multi-user.target
