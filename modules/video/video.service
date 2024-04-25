@@ -7,7 +7,7 @@ Type=simple
 Restart=on-failure
 User=pi
 WorkingDirectory=/home/pi/ffs/modules/video
-ExecStart=/home/pi/ffs/modules/video/bin/python -mu src.main
+ExecStart=/home/pi/ffs/modules/video/bin/python -m src.main
 
 [Install]
 WantedBy=multi-user.target
