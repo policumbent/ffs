@@ -30,7 +30,7 @@ def main():
             'size': (1640, 1232)
         }
     )
-    config["transform"] = libcamera.Transform(vflip=1)
+    config["transform"] = libcamera.Transform(hflip=1, vflip=1)
     picam.configure(config)
 
     picam.start_preview(Preview.DRM, x=0, y=0, width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
