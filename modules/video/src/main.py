@@ -21,8 +21,7 @@ def main():
     try: 
         with open(f"{config_path}/video.json") as video_config_file:
             try:
-                json.load(video_config_file)
-                config = json.load(f"{config_path}/video.json")
+                config = json.load(video_config_file)
 
             except Exception as json_err:
                 log.err(f"VIDEO - JSON: {json_err}")
