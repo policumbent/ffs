@@ -53,6 +53,7 @@ def main():
             vflip=config["vflip"]
         )
     )
+    picam.configure(preview_config)
 
     picam.start_preview(
         Preview.DRM,
