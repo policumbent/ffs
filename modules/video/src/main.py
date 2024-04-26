@@ -5,35 +5,61 @@ from time import sleep
 import libcamera
 from picamera2 import Picamera2, Preview
 
+import json
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'libs')))
 from log import log
 
 
-# the following values are not the exact dimension of the screen, but,
-# empirically, they are the best values we've found (up to now, at least)
-MAIN_STREAM_WIDTH  = 1920
-MAIN_STREAM_HEIGHT = 1125
-
-SCREEN_WIDTH  = 1024
-SCREEN_HEIGHT = 600
+home_path = os.getenv("HOME")
+config_path = f"{home_path}/config"
 
 
 def main():
+    config = None
+    try: 
+        with open(f"{config_path}/video.json") as video_config_file:
+            try:
+                json.load(video_config_file)
+                config = json.load(f"{config_path}/video.json")
+
+            except Exception as json_err:
+                log.err(f"VIDEO - JSON: {json_err}")
+                
+    except Exception as file_err:
+        log.err(f"VIDEO - FILE: {file_err}")
+
     picam = Picamera2()
 
-    config = picam.create_preview_configuration(
+    preview_config = picam.create_preview_configuration(
         # main video stream parameters
-        main = {'size': (MAIN_STREAM_WIDTH, MAIN_STREAM_HEIGHT)},
+        main = {'size': (
+            config["main_stream"]["width"],
+            config["main_stream"]["height"]
+        )},
+
         # raw video stream from camera sensor (chosen with rpicam-hello)
         raw = {
-            'format': 'SRGGB10_CSI2P',
-            'size': (1640, 1232)
-        }
-    )
-    config["transform"] = libcamera.Transform(hflip=1, vflip=1)
-    picam.configure(config)
+            'format': config["raw_stream"]["format"],
+            'size': (
+                config["raw_stream"]["size"]["width"],
+                config["raw_stream"]["size"]["height"]
+            )
+        },
 
-    picam.start_preview(Preview.DRM, x=0, y=0, width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
+        # transform parameters
+        transform = libcamera.Transform(
+            hflip=config["hflip"],
+            vflip=config["vflip"]
+        )
+    )
+
+    picam.start_preview(
+        Preview.DRM,
+        x=0, y=0,
+        width=config["screen"]["width"],
+        height=config["screen"]["height"]
+    )
     picam.start()
 
     pause()

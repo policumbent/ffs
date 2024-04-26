@@ -1,0 +1,20 @@
+{
+    "main_stream": {
+        "width": 1920,
+        "height": 1125
+    },
+    "raw_stream": {
+        "format": "SRGGB10_CSI2P",
+        "size": {
+            "width": 1640,
+            "height": 1232
+        }
+    },
+    "screen": {
+        "width": 1024,
+        "height": 600
+    },
+    "hflip": 1,
+    "vflip": 1,
+    "camera_preset": ""
+}
