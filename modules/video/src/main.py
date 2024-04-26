@@ -2,6 +2,7 @@ import os, sys
 from signal import pause
 from time import sleep
 
+import libcamera
 from picamera2 import Picamera2, Preview
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'libs')))
@@ -29,6 +30,7 @@ def main():
             'size': (1640, 1232)
         }
     )
+    config["transform"] = libcamera.Transform(vflip=1)
     picam.configure(config)
 
     picam.start_preview(Preview.DRM, x=0, y=0, width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
