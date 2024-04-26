@@ -12,7 +12,8 @@ from log import log
 
 
 home_path = os.getenv("HOME")
-config_path = f"{home_path}/config"
+ffs_path = f"{home_path}/ffs"
+config_path = f"{ffs_path}/config"
 
 
 def main():
@@ -25,7 +26,7 @@ def main():
 
             except Exception as json_err:
                 log.err(f"VIDEO - JSON: {json_err}")
-                
+
     except Exception as file_err:
         log.err(f"VIDEO - FILE: {file_err}")
 
