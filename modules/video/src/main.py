@@ -7,6 +7,7 @@ from picamera2 import Picamera2, Preview
 
 import json
 
+# append into path the libs folder, so that Python will find them
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'libs')))
 from log import log
 
