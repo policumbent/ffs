@@ -11,7 +11,7 @@ colors = {
 
 
 class OverlayElement:
-    def __init__(self, type, val=None, unit=None, color=colors['white'],
+    def __init__(self, type, val=None, unit="", color=colors['white'],
                  transparency=255):
         self.type = type
         self.val = val
@@ -64,9 +64,11 @@ class Overlay:
         
         if len(self.top_left) > 0:
             for i, element in enumerate(self.top_left):
+                msg = f"{element.val}{element.unit}"
+
                 cv2.putText(
                     overlay,
-                    f"{element.val} {element.unit}",
+                    msg,
                     (self.top_left_org[0], self.top_vert_org[i]),
                     self.font,
                     self.font_scale,
@@ -77,8 +79,10 @@ class Overlay:
 
         if len(self.top_middle) > 0:
             for i, element in enumerate(self.top_left):
+                msg = f"{element.val}{element.unit}"
+
                 elem_dim, _ = cv2.getTextSize(
-                    f"{element.val} {element.unit}",
+                    msg,
                     self.font,
                     self.font_scale,
                     self.thickness
@@ -86,7 +90,7 @@ class Overlay:
                 
                 cv2.putText(
                     overlay,
-                    f"{element.val} {element.unit}",
+                    msg,
                     ((self.screen_width - elem_dim[0]) // 2, self.top_vert_org[i]),
                     self.font,
                     self.font_scale,
@@ -97,8 +101,10 @@ class Overlay:
 
         if len(self.top_right) > 0:
             for i, element in enumerate(self.top_right):
+                msg = f"{element.val}{element.unit}"
+
                 elem_dim, _ = cv2.getTextSize(
-                    f"{element.val} {element.unit}",
+                    msg,
                     self.font,
                     self.font_scale,
                     self.thickness
@@ -106,7 +112,7 @@ class Overlay:
 
                 cv2.putText(
                     overlay,
-                    f"{element.val} {element.unit}",
+                    msg,
                     (self.top_right_org[0] - elem_dim[0], self.top_vert_org[i]),
                     self.font,
                     self.font_scale,
@@ -117,9 +123,11 @@ class Overlay:
 
         if len(self.bottom_left) > 0:
             for i, element in enumerate(self.bottom_left):
+                msg = f"{element.val}{element.unit}"
+
                 cv2.putText(
                     overlay,
-                    f"{element.val} {element.unit}",
+                    msg,
                     (self.bottom_left_org[0], self.bottom_vert_org[i]),
                     self.font,
                     self.font_scale,
@@ -129,9 +137,11 @@ class Overlay:
                 )
             
         if len(self.bottom_middle) > 0:
-            for i, element in enumerate(self.bottom_left):
+            for i, element in enumerate(self.bottom_middle):
+                msg = f"{element.val}{element.unit}"
+
                 elem_dim, _ = cv2.getTextSize(
-                    f"{element.val} {element.unit}",
+                    msg,
                     self.font,
                     self.font_scale,
                     self.thickness
@@ -139,7 +149,7 @@ class Overlay:
                 
                 cv2.putText(
                     overlay,
-                    f"{element.val} {element.unit}",
+                    msg,
                     ((self.screen_width - elem_dim[0]) // 2, self.bottom_vert_org[i]),
                     self.font,
                     self.font_scale,
@@ -150,8 +160,10 @@ class Overlay:
         
         if len(self.bottom_right) > 0:
             for i, element in enumerate(self.bottom_right):
+                msg = f"{element.val}{element.unit}"
+
                 elem_dim, _ = cv2.getTextSize(
-                    f"{element.val} {element.unit}",
+                    msg,
                     self.font,
                     self.font_scale,
                     self.thickness
@@ -159,7 +171,7 @@ class Overlay:
 
                 cv2.putText(
                     overlay,
-                    f"{element.val} {element.unit}",
+                    msg,
                     (self.bottom_right_org[0] - elem_dim[0], self.bottom_vert_org[i]),
                     self.font,
                     self.font_scale,

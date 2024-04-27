@@ -68,11 +68,11 @@ def main():
     )
     picam.start()
 
-    speed = OverlayElement("ant/speed", unit="kph", color=colors["blue"])
-    distance = OverlayElement("ant/distance", unit="m", color=colors["white"])
-    power = OverlayElement("ant/power", unit="W", color=colors["blue"])
-    heartrate = OverlayElement("ant/heartrate", unit="bpm", color=colors["red"])
-    cadence = OverlayElement("ant/cadence", unit="rpm", color=colors["green"])
+    speed = OverlayElement("ant/speed", unit=" kph", color=colors["blue"])
+    distance = OverlayElement("ant/distance", unit=" m", color=colors["white"])
+    power = OverlayElement("ant/power", unit=" W", color=colors["blue"])
+    heartrate = OverlayElement("ant/heartrate", unit=" bpm", color=colors["red"])
+    cadence = OverlayElement("ant/cadence", unit=" rpm", color=colors["green"])
     gear = OverlayElement("gb/gear", color=colors["white"])
 
     top_left_overlay = [speed, heartrate]
@@ -90,6 +90,21 @@ def main():
     )
 
     pause()
+
+    # TEST MODE -> to use it, decomment this snippet of code and comment the
+    # pause() above
+    #while True:
+    #    for i in range(11):
+    #        speed.set_value(i)
+    #        distance.set_value(i)
+    #        power.set_value(i)
+    #        heartrate.set_value(i)
+    #        cadence.set_value(i)
+    #        gear.set_value(i)
+    #        overlay = overlay_obj.update_overlay()
+    #        picam.set_overlay(overlay)
+    #        #log.info("VIDEO - Overlay in progress")
+    #        sleep(1)
 
 
 if __name__ == '__main__':
