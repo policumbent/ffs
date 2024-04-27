@@ -47,11 +47,11 @@ class Overlay:
         self.bottom_right = bottom_right
 
         self.top_vert_org = []
-        for i in max(len(self.top_left), len(self.top_right)):
+        for i in range(max(len(self.top_left), len(self.top_right))):
             self.top_vert_org.append(top_left_org[1] + i * offset)
 
         self.bottom_vert_org = []
-        for i in max(len(self.bottom_left), len(self.bottom_right)):
+        for i in range(max(len(self.bottom_left), len(self.bottom_right))):
             self.bottom_vert_org.append(bottom_left_org[1] - i * offset)
 
 
