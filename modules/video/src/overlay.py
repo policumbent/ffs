@@ -32,6 +32,10 @@ class Overlay:
                  bottom_left=[], bottom_middle=[], bottom_right=[]):
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.top_left_org = top_left_org
+        self.top_right_org = top_right_org
+        self.bottom_left_org = bottom_left_org
+        self.bottom_right_org = bottom_right_org
 
         self.font_scale = font_scale
         self.thickness = thickness
@@ -66,6 +70,7 @@ class Overlay:
                     (self.top_left_org[0], self.top_vert_org[i]),
                     self.font,
                     self.font_scale,
+                    element.color,
                     self.thickness,
                     bottomLeftOrigin=False
                 )
@@ -85,18 +90,27 @@ class Overlay:
                     ((self.screen_width - elem_dim[0]) // 2, self.top_vert_org[i]),
                     self.font,
                     self.font_scale,
+                    element.color,
                     self.thickness,
                     bottomLeftOrigin=False
                 )
 
         if len(self.top_right) > 0:
             for i, element in enumerate(self.top_right):
+                elem_dim, _ = cv2.getTextSize(
+                    f"{element.val} {element.unit}",
+                    self.font,
+                    self.font_scale,
+                    self.thickness
+                )
+
                 cv2.putText(
                     overlay,
                     f"{element.val} {element.unit}",
-                    (self.top_right_org[0], self.top_vert_org[i]),
+                    (self.top_right_org[0] - elem_dim[0], self.top_vert_org[i]),
                     self.font,
                     self.font_scale,
+                    element.color,
                     self.thickness,
                     bottomLeftOrigin=False
                 )
@@ -109,6 +123,7 @@ class Overlay:
                     (self.bottom_left_org[0], self.bottom_vert_org[i]),
                     self.font,
                     self.font_scale,
+                    element.color,
                     self.thickness,
                     bottomLeftOrigin=False
                 )
@@ -128,18 +143,27 @@ class Overlay:
                     ((self.screen_width - elem_dim[0]) // 2, self.bottom_vert_org[i]),
                     self.font,
                     self.font_scale,
+                    element.color,
                     self.thickness,
                     bottomLeftOrigin=False
                 )
         
         if len(self.bottom_right) > 0:
             for i, element in enumerate(self.bottom_right):
+                elem_dim, _ = cv2.getTextSize(
+                    f"{element.val} {element.unit}",
+                    self.font,
+                    self.font_scale,
+                    self.thickness
+                )
+
                 cv2.putText(
                     overlay,
                     f"{element.val} {element.unit}",
-                    (self.bottom_right_org[0], self.bottom_vert_org[i]),
+                    (self.bottom_right_org[0] - elem_dim[0], self.bottom_vert_org[i]),
                     self.font,
                     self.font_scale,
+                    element.color,
                     self.thickness,
                     bottomLeftOrigin=False
                 )
