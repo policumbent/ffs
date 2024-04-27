@@ -5,6 +5,10 @@ from time import sleep
 import libcamera
 from picamera2 import Picamera2, Preview
 
+from .overlay import OverlayElement, Overlay, colors
+
+import numpy as np
+
 import json
 
 # append into path the libs folder, so that Python will find them
@@ -63,6 +67,27 @@ def main():
         height=config["screen"]["height"]
     )
     picam.start()
+
+    speed = OverlayElement("ant/speed", unit="kph", color=colors["blue"])
+    distance = OverlayElement("ant/distance", unit="m", color=colors["white"])
+    power = OverlayElement("ant/power", unit="W", color=colors["blue"])
+    heartrate = OverlayElement("ant/heartrate", unit="bpm", color=colors["red"])
+    cadence = OverlayElement("ant/cadence", unit="rpm", color=colors["green"])
+    gear = OverlayElement("gb/gear", color=colors["white"])
+
+    top_left_overlay = [speed, heartrate]
+    top_right_overlay = [power, cadence]
+    bottom_middle_overlay = [gear]
+    bottom_right_overlay = [distance]
+
+    overlay_obj = Overlay(
+        config["screen"]["width"],
+        config["screen"]["height"],
+        top_left=top_left_overlay,
+        top_right=top_right_overlay,
+        bottom_middle=bottom_middle_overlay,
+        bottom_right=bottom_right_overlay
+    )
 
     pause()
 
