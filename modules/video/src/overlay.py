@@ -24,7 +24,7 @@ class OverlayElement:
 
 class Overlay:
     def __init__(self, screen_width=1024, screen_height=600,
-                 top_left_org = (10, 50), top_left_org = (1014, 50),
+                 top_left_org = (10, 50), top_right_org = (1014, 50),
                  bottom_left_org = (10, 570), bottom_right_org = (1014, 570),
                  font_scale=1.5, thickness=4, offset=50, rotation=0,
                  font = cv2.FONT_HERSHEY_SIMPLEX,
