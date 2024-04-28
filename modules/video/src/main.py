@@ -46,6 +46,8 @@ bottom_right_overlay = [distance]
 
 if TEST_MODE:
     top_middle_overlay = [test_mode]
+else:
+    top_middle_overlay = []
 
 
 def test_mode(picam, overlay_obj):
