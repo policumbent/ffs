@@ -29,11 +29,11 @@ FIFO_TO_VIDEO = "fifo_to_video"
 
 
 # overlay elements declaration
-speed = OverlayElement("ant/speed", unit=" kph", color=colors["blue"])
-distance = OverlayElement("ant/distance", unit=" m", color=colors["white"])
-power = OverlayElement("ant/power", unit=" W", color=colors["blue"])
-heartrate = OverlayElement("ant/heartrate", unit=" bpm", color=colors["red"])
-cadence = OverlayElement("ant/cadence", unit=" rpm", color=colors["green"])
+speed = OverlayElement("speed", unit=" kph", color=colors["blue"])
+distance = OverlayElement("distance", unit=" m", color=colors["white"])
+power = OverlayElement("power", unit=" W", color=colors["blue"])
+heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["red"])
+cadence = OverlayElement("cadence", unit=" rpm", color=colors["green"])
 gear = OverlayElement("gb/gear", color=colors["white"])
 
 test_mode = OverlayElement("test", val="TEST")
@@ -66,19 +66,19 @@ def test_mode(picam, overlay_obj):
 
 
 def update_values(type, val):
-    if type == "ant/speed":
+    if type == "speed":
         speed.set_value(val)
 
-    elif type == "ant/distance":
+    elif type == "distance":
         distance.set_value(val)
 
-    elif type == "ant/power":
+    elif type == "power":
         power.set_value(val)
 
-    elif type == "ant/heartrate":
+    elif type == "heartrate":
         heartrate.set_value(val)
 
-    elif type == "ant/cadence":
+    elif type == "cadence":
         cadence.set_value(val)
 
     elif type == "gb/gear":
@@ -92,10 +92,11 @@ def fifo_mode(pipe, picam, overlay_obj):
                 for rd in pipe.get_data().rstrip().split("-"):
                     if rd != "":
                         sensor, value = rd.split(":")
+                        log.info(f"{sensor}: {value}")
                         update_values(sensor, value)
                         overlay_obj.update_overlay()
         except Exception as e:
-            log.err(f"FIFO: {e}")
+            log.err(f"FIFO MODE: {e}")
 
 
 def json_to_dict(path: str):
