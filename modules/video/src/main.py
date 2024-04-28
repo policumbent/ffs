@@ -17,7 +17,7 @@ from log import log
 from pipe import Pipe
 
 
-TEST_MODE = 1
+TEST_MODE = 0
 
 
 # useful paths as strings
