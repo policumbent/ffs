@@ -7,7 +7,7 @@
     "hflip": 1,
     "vflip": 1,
     "overlay": {
-        "thickness": 2,
+        "thickness": 3,
         "rotation": 0
     },
     "camera_preset": ""
