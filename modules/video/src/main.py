@@ -90,22 +90,22 @@ def main():
         bottom_right=bottom_right_overlay
     )
 
-    pause()
+    #pause()
 
-    # TEST MODE -> to use it, decomment this snippet of code and comment the
+    # TEST MODE -> to use it, decomment the following code and comment the
     # pause() above
-    #while True:
-    #    for i in range(11):
-    #        speed.set_value(i)
-    #        distance.set_value(i)
-    #        power.set_value(i)
-    #        heartrate.set_value(i)
-    #        cadence.set_value(i)
-    #        gear.set_value(i)
-    #        overlay = overlay_obj.update_overlay()
-    #        picam.set_overlay(overlay)
-    #        #log.info("VIDEO - Overlay in progress")
-    #        sleep(1)
+    while True:
+        for i in range(11):
+            speed.set_value(i)
+            distance.set_value(i)
+            power.set_value(i)
+            heartrate.set_value(i)
+            cadence.set_value(i)
+            gear.set_value(i)
+            overlay = overlay_obj.update_overlay()
+            picam.set_overlay(overlay)
+            #log.info("VIDEO - Overlay in progress")
+            sleep(1)
 
 
 if __name__ == '__main__':
