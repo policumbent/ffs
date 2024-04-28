@@ -47,20 +47,8 @@ bottom_right_overlay = [distance]
 if TEST_MODE:
     top_middle_overlay = [test_mode]
 
-# overlay declaration
-overlay_obj = Overlay(
-    video_conf["screen"]["width"],
-    video_conf["screen"]["height"],
-    rotation=video_conf["overlay_rotation"],
-    top_left=top_left_overlay,
-    top_middle=top_middle_overlay,
-    top_right=top_right_overlay,
-    bottom_middle=bottom_middle_overlay,
-    bottom_right=bottom_right_overlay
-)
 
-
-def test_mode(picam):
+def test_mode(picam, overlay_obj):
     while True:
         for i in range(11):
             speed.set_value(i)
@@ -78,30 +66,24 @@ def test_mode(picam):
 def update_values(type, val):
     if type == "ant/speed":
         speed.set_value(val)
-        overlay_obj.update_overlay()
-        
+
     elif type == "ant/distance":
         distance.set_value(val)
-        overlay_obj.update_overlay()
-        
+
     elif type == "ant/power":
         power.set_value(val)
-        overlay_obj.update_overlay()
-        
+
     elif type == "ant/heartrate":
         heartrate.set_value(val)
-        overlay_obj.update_overlay()
-        
+
     elif type == "ant/cadence":
         cadence.set_value(val)
-        overlay_obj.update_overlay()
-        
+
     elif type == "gb/gear":
         gear.set_value(val)
-        overlay_obj.update_overlay()
 
 
-def fifo_mode(pipe, picam):
+def fifo_mode(pipe, picam, overlay_obj):
     while True:
         try:
             if pipe.read():
@@ -109,6 +91,7 @@ def fifo_mode(pipe, picam):
                     if rd != "":
                         sensor, value = rd.split(":")
                         update_values(sensor, value)
+                        overlay_obj.update_overlay()
         except Exception as e:
             log.err(f"FIFO: {e}")
 
@@ -168,12 +151,24 @@ def main():
     )
     picam.start()
 
+    # overlay declaration
+    overlay_obj = Overlay(
+        video_conf["screen"]["width"],
+        video_conf["screen"]["height"],
+        rotation=video_conf["overlay_rotation"],
+        top_left=top_left_overlay,
+        top_middle=top_middle_overlay,
+        top_right=top_right_overlay,
+        bottom_middle=bottom_middle_overlay,
+        bottom_right=bottom_right_overlay
+    )
+
     if TEST_MODE:
-        test_mode(picam)
+        test_mode(picam, overlay_obj)
     else:
         # hybrid solution with pipe still in bob
         pipe = Pipe(f"{home_path}/bob/{FIFO_TO_VIDEO}", "r")
-        fifo_mode(pipe, picam)
+        fifo_mode(pipe, picam, overlay_obj)
 
 
 if __name__ == '__main__':
