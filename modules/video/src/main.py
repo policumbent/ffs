@@ -53,7 +53,7 @@ def main():
 
         # raw video stream from camera sensor (chosen with rpicam-hello)
         raw = {
-            'format': camera_conf["raw_stream"]["format"],
+            'format': camera_conf[cam_name]["raw_stream"]["format"],
             'size': (
                 camera_conf[cam_name]["raw_stream"]["size"]["width"],
                 camera_conf[cam_name]["raw_stream"]["size"]["height"]
