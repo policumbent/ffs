@@ -78,7 +78,7 @@ class Overlay:
                 )
 
         if len(self.top_middle) > 0:
-            for i, element in enumerate(self.top_left):
+            for i, element in enumerate(self.top_middle):
                 msg = f"{element.val}{element.unit}"
 
                 elem_dim, _ = cv2.getTextSize(
