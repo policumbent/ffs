@@ -21,12 +21,11 @@ ffs_path = f"{home_path}/ffs"
 config_path = f"{ffs_path}/config"
 
 
-def main():
-    config = None
+def json_to_dict(path: str):
     try: 
-        with open(f"{config_path}/video.json") as video_config_file:
+        with open(path) as file:
             try:
-                config = json.load(video_config_file)
+                res = json.load(file)
 
             except Exception as json_err:
                 log.err(f"VIDEO - JSON: {json_err}")
@@ -34,21 +33,30 @@ def main():
     except Exception as file_err:
         log.err(f"VIDEO - FILE: {file_err}")
 
+    return res
+
+
+def main():
+    config = json_to_dict(f"{config_path}/config.json")
+    camera_conf = json_to_dict(f"{config_path}/camera.json")
+
+    cam_name = config["camera_name"]
+
     picam = Picamera2()
 
     preview_config = picam.create_preview_configuration(
         # main video stream parameters
         main = {'size': (
-            config["main_stream"]["width"],
-            config["main_stream"]["height"]
+            camera_conf[cam_name]["main_stream"]["width"],
+            camera_conf[cam_name]["main_stream"]["height"]
         )},
 
         # raw video stream from camera sensor (chosen with rpicam-hello)
         raw = {
             'format': config["raw_stream"]["format"],
             'size': (
-                config["raw_stream"]["size"]["width"],
-                config["raw_stream"]["size"]["height"]
+                camera_conf[cam_name]["raw_stream"]["size"]["width"],
+                camera_conf[cam_name]["raw_stream"]["size"]["height"]
             )
         },
 
