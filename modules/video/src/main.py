@@ -83,6 +83,7 @@ def main():
     overlay_obj = Overlay(
         config["screen"]["width"],
         config["screen"]["height"],
+        rotation=config["overlay_rotation"],
         top_left=top_left_overlay,
         top_right=top_right_overlay,
         bottom_middle=bottom_middle_overlay,

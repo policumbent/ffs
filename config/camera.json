@@ -1,0 +1,28 @@
+{
+    "rpi_cam_v2_1": {
+        "main_stream": {
+            "width": 1920,
+            "height": 1125
+        },
+        "raw_stream": {
+            "format": "SRGGB10_CSI2P",
+            "size": {
+                "width": 1640,
+                "height": 1232
+            }
+        }
+    },
+    "rpi_cam_v3": {
+        "main_stream": {
+            "width": 1920,
+            "height": 1125
+        },
+        "raw_stream": {
+            "format": "SRGGB10_CSI2P",
+            "size": {
+                "width": 1640,
+                "height": 1232
+            }
+        }
+    }
+}
