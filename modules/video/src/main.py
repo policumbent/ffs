@@ -27,7 +27,6 @@ def json_to_dict(path: str):
         with open(path) as file:
             try:
                 res = json.load(file)
-
             except Exception as json_err:
                 log.err(f"VIDEO - JSON: {json_err}")
 
@@ -38,10 +37,10 @@ def json_to_dict(path: str):
 
 
 def main():
-    config = json_to_dict(f"{config_path}/config.json")
+    video_conf = json_to_dict(f"{config_path}/video.json")
     camera_conf = json_to_dict(f"{config_path}/camera.json")
 
-    cam_name = config["camera_name"]
+    cam_name = video_conf["camera_name"]
 
     picam = Picamera2()
 
@@ -54,7 +53,7 @@ def main():
 
         # raw video stream from camera sensor (chosen with rpicam-hello)
         raw = {
-            'format': config["raw_stream"]["format"],
+            'format': camera_conf["raw_stream"]["format"],
             'size': (
                 camera_conf[cam_name]["raw_stream"]["size"]["width"],
                 camera_conf[cam_name]["raw_stream"]["size"]["height"]
@@ -63,8 +62,8 @@ def main():
 
         # transform parameters
         transform = libcamera.Transform(
-            hflip=config["hflip"],
-            vflip=config["vflip"]
+            hflip=video_conf["hflip"],
+            vflip=video_conf["vflip"]
         )
     )
     picam.configure(preview_config)
@@ -72,8 +71,8 @@ def main():
     picam.start_preview(
         Preview.DRM,
         x=0, y=0,
-        width=config["screen"]["width"],
-        height=config["screen"]["height"]
+        width=video_conf["screen"]["width"],
+        height=video_conf["screen"]["height"]
     )
     picam.start()
 
@@ -90,9 +89,9 @@ def main():
     bottom_right_overlay = [distance]
 
     overlay_obj = Overlay(
-        config["screen"]["width"],
-        config["screen"]["height"],
-        rotation=config["overlay_rotation"],
+        video_conf["screen"]["width"],
+        video_conf["screen"]["height"],
+        rotation=video_conf["overlay_rotation"],
         top_left=top_left_overlay,
         top_right=top_right_overlay,
         bottom_middle=bottom_middle_overlay,
