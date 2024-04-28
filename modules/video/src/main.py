@@ -155,7 +155,8 @@ def main():
     overlay_obj = Overlay(
         video_conf["screen"]["width"],
         video_conf["screen"]["height"],
-        rotation=video_conf["overlay_rotation"],
+        thickness=video_conf["overlay"]["thickness"],
+        rotation=video_conf["overlay"]["rotation"],
         top_left=top_left_overlay,
         top_middle=top_middle_overlay,
         top_right=top_right_overlay,

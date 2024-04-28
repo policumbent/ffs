@@ -6,6 +6,9 @@
     },
     "hflip": 1,
     "vflip": 1,
-    "overlay_rotation": 0,
+    "overlay": {
+        "thickness": 2,
+        "rotation": 0
+    },
     "camera_preset": ""
 }
