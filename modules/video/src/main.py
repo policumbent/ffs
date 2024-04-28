@@ -22,6 +22,7 @@ config_path = f"{ffs_path}/config"
 
 
 def json_to_dict(path: str):
+    res = None
     try: 
         with open(path) as file:
             try:
