@@ -180,4 +180,10 @@ class Overlay:
                     bottomLeftOrigin=False
                 )
 
+        if self.rotation != 0:
+            image_center = tuple(np.array(overlay.shape[1::-1]) / 2)
+            rot_mat = cv2.getRotationMatrix2D(image_center, self.rotation, 1.0)
+            result = cv2.warpAffine(overlay, rot_mat, overlay.shape[1::-1], flags=cv2.INTER_LINEAR)
+            return result
+
         return overlay
