@@ -64,6 +64,9 @@ class Overlay:
         
         if len(self.top_left) > 0:
             for i, element in enumerate(self.top_left):
+                if element.unit == None:
+                    continue
+                
                 msg = f"{element.val}{element.unit}"
 
                 cv2.putText(
@@ -79,6 +82,9 @@ class Overlay:
 
         if len(self.top_middle) > 0:
             for i, element in enumerate(self.top_middle):
+                if element.unit == None:
+                    continue
+                
                 msg = f"{element.val}{element.unit}"
 
                 elem_dim, _ = cv2.getTextSize(
@@ -101,6 +107,9 @@ class Overlay:
 
         if len(self.top_right) > 0:
             for i, element in enumerate(self.top_right):
+                if element.unit == None:
+                    continue
+                
                 msg = f"{element.val}{element.unit}"
 
                 elem_dim, _ = cv2.getTextSize(
@@ -123,6 +132,9 @@ class Overlay:
 
         if len(self.bottom_left) > 0:
             for i, element in enumerate(self.bottom_left):
+                if element.unit == None:
+                    continue
+                
                 msg = f"{element.val}{element.unit}"
 
                 cv2.putText(
@@ -138,6 +150,9 @@ class Overlay:
             
         if len(self.bottom_middle) > 0:
             for i, element in enumerate(self.bottom_middle):
+                if element.unit == None:
+                    continue
+                
                 msg = f"{element.val}{element.unit}"
 
                 elem_dim, _ = cv2.getTextSize(
@@ -160,6 +175,9 @@ class Overlay:
         
         if len(self.bottom_right) > 0:
             for i, element in enumerate(self.bottom_right):
+                if element.unit == None:
+                    continue
+                
                 msg = f"{element.val}{element.unit}"
 
                 elem_dim, _ = cv2.getTextSize(
