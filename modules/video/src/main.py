@@ -94,7 +94,8 @@ def fifo_mode(pipe, picam, overlay_obj):
                         sensor, value = rd.split(":")
                         log.info(f"{sensor}: {value}")
                         update_values(sensor, value)
-                        overlay_obj.update_overlay()
+                        overlay = overlay_obj.update_overlay()
+                        picam.set_overlay(overlay)
         except Exception as e:
             log.err(f"FIFO MODE: {e}")
 
