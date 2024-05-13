@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, stat
 from signal import pause
 from time import sleep
 
@@ -14,7 +14,6 @@ import json
 # append into path the libs folder, so that Python will find them
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'libs')))
 from log import log
-from pipe import Pipe
 
 
 TEST_MODE = 0
@@ -25,7 +24,16 @@ home_path = os.getenv("HOME")
 ffs_path = f"{home_path}/ffs"
 config_path = f"{ffs_path}/config"
 
+
 FIFO_TO_VIDEO = "fifo_to_video"
+FIFO = f"{home_path}/bob/{FIFO_TO_VIDEO}"
+
+if os.path.exists(FIFO):
+    if not stat.S_ISFIFO(os.stat(FIFO).st_mode):
+        os.remove(FIFO)
+        os.mkfifo(FIFO)
+else:
+    os.mkfifo(FIFO)
 
 
 # overlay elements declaration
@@ -85,17 +93,19 @@ def update_values(type, val):
         gear.set_value(val)
 
 
-def fifo_mode(pipe, picam, overlay_obj):
+def fifo_mode(picam, overlay_obj):
     while True:
         try:
-            if pipe.read():
-                for rd in pipe.get_data().rstrip().split("-"):
-                    if rd != "":
-                        sensor, value = rd.split(":")
+            with open(FIFO, 'rb', 0) as fifo:
+                for line in fifo:
+                    try:    
+                        sensor, value = line.decode().rstrip().split(":")
                         log.info(f"{sensor}: {value}")
                         update_values(sensor, value)
                         overlay = overlay_obj.update_overlay()
                         picam.set_overlay(overlay)
+                    except Exception as e:
+                        log.err(f"FIFO MODE: {e}")
         except Exception as e:
             log.err(f"FIFO MODE: {e}")
 
@@ -172,8 +182,7 @@ def main():
         test_mode(picam, overlay_obj)
     else:
         # hybrid solution with pipe still in bob
-        pipe = Pipe(f"{home_path}/bob/{FIFO_TO_VIDEO}", "r")
-        fifo_mode(pipe, picam, overlay_obj)
+        fifo_mode(picam, overlay_obj)
 
 
 if __name__ == '__main__':
