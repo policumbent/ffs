@@ -183,8 +183,7 @@ def main():
         test_mode(picam, overlay_obj)
     else:
         # hybrid solution with pipe still in bob
-        pipe = Pipe(f"{home_path}/bob/{FIFO_TO_VIDEO}", "r")
-        fifo_mode(pipe, picam, overlay_obj)
+        fifo_mode(picam, overlay_obj)
 
 
 if __name__ == '__main__':
