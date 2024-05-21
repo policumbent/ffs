@@ -85,7 +85,7 @@ def ant_reader(writer):
     return
 
 
-def vid_sender(reader):
+def vid_writer(reader):
     fifo_vid = open(FIFO_VID, 'wb', 0)
     while True:
         if reader.poll():
@@ -131,6 +131,18 @@ def main():
 
     reader_ant, writer_ant = Pipe(duplex=False)
     reader_vid, writer_vid = Pipe(duplex=False)
+
+    can_manager_proc = Process(target=can_manager, args=(reader_ant, writer_vid))
+    vid_writer_proc  = Process(target=vid_writer, args=(reader_vid))
+    ant_reader_proc  = Process(target=ant_reader, args=(writer_ant))
+
+    can_manager_proc.start()
+    vid_writer_proc.start()
+    ant_reader_proc.start()
+
+    can_manager_proc.join()
+    vid_writer_proc.join()
+    ant_reader_proc.join()
 
 
 if __name__ == '__main__':
