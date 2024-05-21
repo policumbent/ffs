@@ -1,5 +1,7 @@
-import os, sys
+import os, sys, stat
 import can, cantools
+
+import json
 
 from threading import Thread
 from multiprocessing import Process, Pipe 
@@ -33,6 +35,8 @@ else:
 FIFO_TO_VIDEO = "fifo_to_video"
 FIFO_VID = f"{home_path}/bob/{FIFO_TO_VIDEO}"
 
+can_writers = ["power", "cadence", "ant_speed", "ant_distance", "heartrate"]
+
 if os.path.exists(FIFO_VID):
     if not stat.S_ISFIFO(os.stat(FIFO_VID).st_mode):
         os.remove(FIFO_VID)
@@ -45,6 +49,21 @@ def can_logger():
     sp.call("./can_logger.sh")
 
 
+def json_to_dict(path: str):
+    res = dict()
+    try: 
+        with open(path) as file:
+            try:
+                res = json.load(file)
+            except Exception as json_err:
+                log.err(f"CAN (json_to_dict) - JSON: {json_err}")
+
+    except Exception as file_err:
+        log.err(f"CAN (json_to_dict) - FILE: {file_err}")
+
+    return res
+
+
 def ant_reader(writer):
     while True:
         try:
@@ -53,19 +72,26 @@ def ant_reader(writer):
                     try:    
                         sensor, value = line.decode().rstrip().split(":")
                         log.info(f"{sensor}: {value}")
+
                         if sensor in can_writers:
-                            writer.send()
+                            writer.send((sensor, value))
+
                     except Exception as e:
-                        log.err(f"FIFO MODE (decode): {e}")
+                        log.err(f"ANT READER (decode): {e}")
+
         except Exception as e:
-            log.err(f"FIFO MODE: {e}")
+            log.err(f"ANT READER: {e}")
+
+    return
 
 
 def vid_sender(reader):
     fifo_vid = open(FIFO_VID, 'wb', 0)
     while True:
         if reader.poll():
-            pass
+            data = reader.recv()
+
+            fifo_vid.write(f"{data[0]}:{data[1]}")
 
 
 def can_manager(reader_ant, writer_vid):
@@ -77,12 +103,26 @@ def can_manager(reader_ant, writer_vid):
             receive_own_messages=False
     )
 
-    msg_handler = can_msg_manager(writer_vid)
+    sensors_to_dbc = json_to_dict(f"{config_path}/sensors_to_dbc.json")
+    dbc_to_sensors = json_to_dict(f"{config_path}/dbc_to_sensors.json")
+    
+    msg_handler = can_msg_manager(writer_vid, dbc_to_sensors, dbc)
     notifier = can.Notifier(bus, [msg_handler])
 
     while True:
-        if reader.poll():
-            pass
+        if reader_ant.poll():
+            data = reader.recv()    # data encoded as a two elements tuple in
+                                    # ant_reader:
+                                    #  - data[0] -> sensor
+                                    #  - data[1] -> value
+
+            id_name = sensors_to_dbc[data[0]][0]
+            sig_name = sensors_to_dbc[data[0]][1]
+            pl = dbc.encode_message(id_name, {sig_name: data[1]})
+            id_frame = dbc.get_message_by_name[id_name].frame_id
+            can_frame = can.Message(arbitration_id=id_frame, data=pl)
+
+    return
 
 
 def main():
@@ -90,7 +130,7 @@ def main():
     thread_can_logger.start()
 
     reader_ant, writer_ant = Pipe(duplex=False)
-    reader_vid, writer_vid = Pipe(duplex=True)
+    reader_vid, writer_vid = Pipe(duplex=False)
 
 
 if __name__ == '__main__':

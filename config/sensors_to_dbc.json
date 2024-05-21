@@ -1,0 +1,7 @@
+{
+    "power":        ["BobSrmPower", "SrmPower"],
+    "cadence":      ["BobSrmCadence", "SrmCadence"],
+    "ant_speed":    ["BobHsSpeed", "HsSpeed"],
+    "ant_distance": ["BobHsDisplacement", "HsDisplacement"],
+    "heartrate":    ["BobHR", "HeartRate"]
+}
