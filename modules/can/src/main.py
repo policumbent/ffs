@@ -93,7 +93,7 @@ def vid_writer(reader):
         if reader.poll():
             data = reader.recv()
 
-            payload = f"{data[0]}:{data[1]}"
+            payload = f"{data[0]}:{data[1]}\n"
             log.info(f"VID WRITER: sending data - {data[0]}: {data[1]}")
 
             try:
