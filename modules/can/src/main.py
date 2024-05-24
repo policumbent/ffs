@@ -132,9 +132,9 @@ def main():
     reader_ant, writer_ant = Pipe(duplex=False)
     reader_vid, writer_vid = Pipe(duplex=False)
 
-    can_manager_proc = Process(target=can_manager, args=(reader_ant, writer_vid))
-    vid_writer_proc  = Process(target=vid_writer, args=(reader_vid))
-    ant_reader_proc  = Process(target=ant_reader, args=(writer_ant))
+    can_manager_proc = Process(target=can_manager, args=(reader_ant, writer_vid,))
+    vid_writer_proc  = Process(target=vid_writer, args=(reader_vid,))
+    ant_reader_proc  = Process(target=ant_reader, args=(writer_ant,))
 
     can_manager_proc.start()
     vid_writer_proc.start()
