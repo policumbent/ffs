@@ -1,0 +1,28 @@
+{
+    "GretaError": {
+        "TimeOutError": {
+            "sensor": null
+        }
+    },
+    "GbError": {
+        "GbErrCode": {
+            "sensor": null
+        },
+        "GbGear": {
+            "sensor": null
+        }
+    },
+    "GretaData": {
+        "TelekBattery": {
+            "sensor": null
+        },
+        "RxShifting": {
+            "sensor": null
+        }
+    },
+    "GbData": {
+        "GbGear": {
+            "sensor": "gear"
+        }
+    }
+}

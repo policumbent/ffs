@@ -1,0 +1,13 @@
+[Unit]
+Description=ffs-can
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=on-failure
+User=pi
+WorkingDirectory=/home/pi/ffs/modules/can
+ExecStart=/home/pi/ffs/modules/can/bin/python -m src.main
+
+[Install]
+WantedBy=multi-user.target
