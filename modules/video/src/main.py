@@ -99,6 +99,8 @@ def fifo_mode(picam, overlay_obj):
     while True:
         try:
             with open(FIFO, 'rb', 0) as fifo:
+                log.info(f"FIFO MODE - {FIFO} opened")
+
                 for line in fifo:
                     log.info(f"FIFO MODE, READING - {line.decode()}")
                     try:    
