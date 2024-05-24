@@ -87,6 +87,8 @@ def ant_reader(writer):
 
 def vid_writer(reader):
     fifo_vid = open(FIFO_VID, 'wb', 0)
+    log.info(f"VID WRITER - {FIFO} opened")
+
     while True:
         if reader.poll():
             data = reader.recv()
