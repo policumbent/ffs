@@ -92,6 +92,7 @@ def vid_writer(reader):
             data = reader.recv()
 
             payload = f"{data[0]}:{data[1]}"
+            log.info(f"VID WRITER: sending data - {data[0]}: {data[1]}")
 
             try:
                 fifo_vid.write(payload.encode())
