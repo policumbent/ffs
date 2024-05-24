@@ -1,5 +1,9 @@
 import can, cantools
 
+# append into path the libs folder, so that Python will find them
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'libs')))
+from log import log
+
 class can_msg_manager(can.Listener):
     
     def __init__(self, writer, dbc_to_sensors, dbc):
@@ -16,5 +20,7 @@ class can_msg_manager(can.Listener):
         for signal in decoded_msg:
             if self.dbc_to_sensors[msg_name][signal]["sensor"] != None:
                 self.writer.send((self.dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
+
+                log.info(f"CAN RX: {msg_name}, {signal}: {decoded_msg[signal]}")
 
         return
