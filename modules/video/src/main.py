@@ -98,6 +98,7 @@ def fifo_mode(picam, overlay_obj):
         try:
             with open(FIFO, 'rb', 0) as fifo:
                 for line in fifo:
+                    log.info(f"FIFO MODE, READING - {line.decode}")
                     try:    
                         sensor, value = line.decode().rstrip().split(":")
                         log.info(f"{sensor}: {value}")
