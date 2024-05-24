@@ -15,6 +15,6 @@ class can_msg_manager(can.Listener):
 
         for signal in decoded_msg:
             if self.dbc_to_sensors[msg_name][signal]["sensor"] != None:
-                writer.send((self.dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
+                self.writer.send((self.dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
 
         return
