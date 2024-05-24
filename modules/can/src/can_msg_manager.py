@@ -1,3 +1,4 @@
+import sys
 import can, cantools
 
 # append into path the libs folder, so that Python will find them
