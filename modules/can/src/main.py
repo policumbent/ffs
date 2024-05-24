@@ -91,7 +91,8 @@ def vid_writer(reader):
         if reader.poll():
             data = reader.recv()
 
-            fifo_vid.write(f"{data[0]}:{data[1]}")
+            payload = f"{data[0]}:{data[1]}"
+            fifo_vid.write(payload.encode())
 
 
 def can_manager(reader_ant, writer_vid):
