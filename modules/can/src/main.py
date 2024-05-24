@@ -92,7 +92,11 @@ def vid_writer(reader):
             data = reader.recv()
 
             payload = f"{data[0]}:{data[1]}"
-            fifo_vid.write(payload.encode())
+
+            try:
+                fifo_vid.write(payload.encode())
+            except Exception as e:
+                log.err(f"VID WRITER: {e}")
 
 
 def can_manager(reader_ant, writer_vid):
