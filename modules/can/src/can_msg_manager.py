@@ -3,8 +3,8 @@ import can, cantools
 class can_msg_manager(can.Listener):
     
     def __init__(self, writer, dbc_to_sensors, dbc):
-        self._writer = writer
-        self._dbc_to_sensors = dbc_to_sensors
+        self.writer = writer
+        self.dbc_to_sensors = dbc_to_sensors
         self.dbc = dbc
         return
 
