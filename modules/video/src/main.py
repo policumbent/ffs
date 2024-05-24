@@ -42,7 +42,7 @@ distance = OverlayElement("distance", unit=" m", color=colors["white"])
 power = OverlayElement("power", unit=" W", color=colors["blue"])
 heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["red"])
 cadence = OverlayElement("cadence", unit=" rpm", color=colors["green"])
-gear = OverlayElement("gb/gear", color=colors["white"])
+gear = OverlayElement("gear", color=colors["white"])
 
 test_mode = OverlayElement("test", val="TEST")
 
@@ -89,7 +89,7 @@ def update_values(type, val):
     elif type == "cadence":
         cadence.set_value(val)
 
-    elif type == "gb/gear":
+    elif type == "gear":
         gear.set_value(val)
 
 
