@@ -14,7 +14,7 @@ class can_msg_manager(can.Listener):
         msg_name = self.dbc.get_message_by_frame_id(msg.arbitration_id).name
 
         for signal in decoded_msg:
-            if dbc_to_sensors[msg_name][signal]["sensor"] != None:
-                writer.send((dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
+            if self.dbc_to_sensors[msg_name][signal]["sensor"] != None:
+                writer.send((self.dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
 
         return
