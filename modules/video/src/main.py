@@ -94,6 +94,8 @@ def update_values(type, val):
 
 
 def fifo_mode(picam, overlay_obj):
+    log.info(f"FIFO MODE STARTED")
+
     while True:
         try:
             with open(FIFO, 'rb', 0) as fifo:
