@@ -24,5 +24,39 @@
         "GbGear": {
             "sensor": "gear"
         }
+    },
+    "Dumbms1Data": {
+        "Bat0Voltage": {
+            "sensor": null
+        },
+        "Bat1Voltage": {
+            "sensor": null
+        },
+        "Bat2Voltage": {
+            "sensor": null
+        },
+        "Bat3Voltage": {
+            "sensor": null
+        },
+        "Bat4Voltage": {
+            "sensor": null
+        }
+    },
+    "Dumbms2Data": {
+        "Bat0Voltage": {
+            "sensor": null
+        },
+        "Bat1Voltage": {
+            "sensor": null
+        },
+        "Bat2Voltage": {
+            "sensor": null
+        },
+        "Bat3Voltage": {
+            "sensor": null
+        },
+        "Bat4Voltage": {
+            "sensor": null
+        }
     }
 }

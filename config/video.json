@@ -5,10 +5,10 @@
         "height": 600
     },
     "hflip": 1,
-    "vflip": 1,
+    "vflip": 0,
     "overlay": {
         "thickness": 3,
-        "rotation": 180
+        "rotation": 0
     },
     "camera_preset": ""
 }
