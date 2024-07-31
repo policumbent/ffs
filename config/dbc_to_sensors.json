@@ -58,5 +58,34 @@
         "Bat4Voltage": {
             "sensor": null
         }
+    },
+    "whereamiData": {
+        "Speed": {
+            "sensor": "speed"
+        },
+        "Distance": {
+            "sensor": "distance"
+        }
+    },
+    "whereamiRawData": {
+        "RawSpeed": {
+            "sensor": null
+        },
+        "RawDistance": {
+            "sensor": null
+        }
+    },
+    "whereamiCoords": {
+        "Latitude": {
+            "sensor": null
+        },
+        "Longitude": {
+            "sensor": null
+        }
+    },
+    "whereamiPosUncert": {
+        "PosUncertainty": {
+            "sensor": null
+        }
     }
 }
