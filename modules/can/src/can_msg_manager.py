@@ -19,9 +19,12 @@ class can_msg_manager(can.Listener):
         msg_name = self.dbc.get_message_by_frame_id(msg.arbitration_id).name
 
         for signal in decoded_msg:
-            if self.dbc_to_sensors[msg_name][signal]["sensor"] != None:
-                self.writer.send((self.dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
+            try:
+                if self.dbc_to_sensors[msg_name][signal]["sensor"] != None:
+                    self.writer.send((self.dbc_to_sensors[msg_name][signal]["sensor"], decoded_msg[signal]))
 
-                log.info(f"CAN RX: {msg_name}, {signal}: {decoded_msg[signal]}")
+                    log.info(f"CAN RX: {msg_name}, {signal}: {decoded_msg[signal]}")
+            except Exception as can_dbc_err:
+                log.err(f"CAN RX - DBC CONV ERROR: {can_dbc_err}")
 
         return
