@@ -11,15 +11,15 @@ colors = {
 
 
 class OverlayElement:
+    """
+    :param type: type of data (speed, distance, etc...)
+    :param val: initial value (default: None)
+    :param unit: measurement unit
+    :param color: color of the writing
+    :param transparency: color transparency (255 -> no transparency)
+    """
     def __init__(self, type, val=None, unit="", color=colors['white'],
                  transparency=255):
-        """
-        :param type: type of data (speed, distance, etc...)
-        :param val: initial value (default: None)
-        :param unit: measurement unit
-        :param color: color of the writing
-        :param transparency: color transparency (255 -> no transparency)
-        """
         self.type = type
         self.val = val
         self.unit = unit
@@ -33,6 +33,25 @@ class OverlayElement:
 
 
 class Overlay:
+    """
+    :param screen_width: default 1024px
+    :param screen_height: default 600px
+    :param top_left_org: top left origin point for writings
+    :param top_right_org: top right origin point for writings
+    :param bottom_left_org: bottom left origin point for writings
+    :param bottom_right_org: bottom right origin point for writings
+    :param font_scale: font dimension
+    :param thickness: font thickness
+    :param offset: space between lines
+    :param rotation: overlay rotation angle in degrees
+    :param font: font type, default cv2.FONT_HERSHEY_SIMPLEX
+    :param top_left: ordered list of writings in the top left corner
+    :param top_middle: ordered list of writings at the top in the middle
+    :param top_right: ordered list of writings in the top right corner
+    :param bottom_left: ordered list of writings in the bottom left corner
+    :param bottom_middle: ordered list of writings at the bottom in the middle
+    :param bottom_right: ordered list of writings in the bottom right corner
+    """
     def __init__(self, screen_width=1024, screen_height=600,
                  top_left_org = (10, 50), top_right_org = (1014, 50),
                  bottom_left_org = (10, 570), bottom_right_org = (1014, 570),
@@ -40,27 +59,6 @@ class Overlay:
                  font = cv2.FONT_HERSHEY_SIMPLEX,
                  top_left=[], top_middle=[], top_right=[],
                  bottom_left=[], bottom_middle=[], bottom_right=[]):
-        """
-        creates a new overlay
-
-        :param screen_width: default 1024px
-        :param screen_height: default 600px
-        :param top_left_org: top left origin point for writings
-        :param top_right_org: top right origin point for writings
-        :param bottom_left_org: bottom left origin point for writings
-        :param bottom_right_org: bottom right origin point for writings
-        :param font_scale: font dimension
-        :param thickness: font thickness
-        :param offset: space between lines
-        :param rotation: overlay rotation angle in degrees
-        :param font: font type, default cv2.FONT_HERSHEY_SIMPLEX
-        :param top_left: ordered list of writings in the top left corner
-        :param top_middle: ordered list of writings at the top in the middle
-        :param top_right: ordered list of writings in the top right corner
-        :param bottom_left: ordered list of writings in the bottom left corner
-        :param bottom_middle: ordered list of writings at the bottom in the middle
-        :param bottom_right: ordered list of writings in the bottom right corner
-        """
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.top_left_org = top_left_org
