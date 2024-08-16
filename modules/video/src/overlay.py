@@ -13,12 +13,22 @@ colors = {
 class OverlayElement:
     def __init__(self, type, val=None, unit="", color=colors['white'],
                  transparency=255):
+        """
+        :param type: type of data (speed, distance, etc...)
+        :param val: initial value (default: None)
+        :param unit: measurement unit
+        :param color: color of the writing
+        :param transparency: color transparency (255 -> no transparency)
+        """
         self.type = type
         self.val = val
         self.unit = unit
         self.color = color + (transparency,)
 
     def set_value(self, val):
+        """
+        :param val: new value
+        """
         self.val = round(float(val))
 
 
@@ -30,6 +40,27 @@ class Overlay:
                  font = cv2.FONT_HERSHEY_SIMPLEX,
                  top_left=[], top_middle=[], top_right=[],
                  bottom_left=[], bottom_middle=[], bottom_right=[]):
+        """
+        creates a new overlay
+
+        :param screen_width: default 1024px
+        :param screen_height: default 600px
+        :param top_left_org: top left origin point for writings
+        :param top_right_org: top right origin point for writings
+        :param bottom_left_org: bottom left origin point for writings
+        :param bottom_right_org: bottom right origin point for writings
+        :param font_scale: font dimension
+        :param thickness: font thickness
+        :param offset: space between lines
+        :param rotation: overlay rotation angle in degrees
+        :param font: font type, default cv2.FONT_HERSHEY_SIMPLEX
+        :param top_left: ordered list of writings in the top left corner
+        :param top_middle: ordered list of writings at the top in the middle
+        :param top_right: ordered list of writings in the top right corner
+        :param bottom_left: ordered list of writings in the bottom left corner
+        :param bottom_middle: ordered list of writings at the bottom in the middle
+        :param bottom_right: ordered list of writings in the bottom right corner
+        """
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.top_left_org = top_left_org
@@ -61,7 +92,7 @@ class Overlay:
 
     def update_overlay(self):
         overlay = np.zeros((self.screen_height, self.screen_width, 4), dtype=np.uint8) * 255
-        
+
         if len(self.top_left) > 0:
             for i, element in enumerate(self.top_left):
                 if element.val == None:
@@ -147,7 +178,7 @@ class Overlay:
                     self.thickness,
                     bottomLeftOrigin=False
                 )
-            
+
         if len(self.bottom_middle) > 0:
             for i, element in enumerate(self.bottom_middle):
                 if element.val == None:
@@ -161,7 +192,7 @@ class Overlay:
                     self.font_scale,
                     self.thickness
                 )
-                
+
                 cv2.putText(
                     overlay,
                     msg,
@@ -172,7 +203,7 @@ class Overlay:
                     self.thickness,
                     bottomLeftOrigin=False
                 )
-        
+
         if len(self.bottom_right) > 0:
             for i, element in enumerate(self.bottom_right):
                 if element.val == None:
