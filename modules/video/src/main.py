@@ -59,6 +59,12 @@ else:
 
 
 def test_mode(picam, overlay_obj):
+    """
+    changes every data in the overlay from 0 to 10
+    :param picam: Picamera2 object
+    :param overlay_obj: overlay object created in the main function
+    """
+
     while True:
         for i in range(11):
             speed.set_value(i)
@@ -94,6 +100,11 @@ def update_values(type, val):
 
 
 def fifo_mode(picam, overlay_obj):
+    """
+    takes FIFO_TO_VIDEO as asynchronous data source and updates the overlay
+    :param picam: Picamera2 object
+    :param overlay_obj: overlay object created in the main function
+    """
     log.info(f"FIFO MODE STARTED")
 
     while True:
