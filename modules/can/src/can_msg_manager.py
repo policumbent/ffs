@@ -8,6 +8,12 @@ from log import log
 class can_msg_manager(can.Listener):
     
     def __init__(self, writer, dbc_to_sensors, dbc):
+        """
+        CAN message manager object
+        :param writer: writer Pipe that sends CAN-read data to the process managing the video FIFO
+        :param dbc_to_sensor: JSON-based dictionary that decodes sensors types for the video
+        :param dbc: dbc specification file
+        """
         self.writer = writer
         self.dbc_to_sensors = dbc_to_sensors
         self.dbc = dbc
