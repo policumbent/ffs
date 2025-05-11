@@ -65,6 +65,10 @@ def json_to_dict(path: str):
 
 
 def ant_reader(writer):
+    """
+    reads the ant-can FIFO and writes the given messages on the internal ant
+    Pipe that sends the messages that have to be sent on the CAN Bus
+    """
     while True:
         try:
             with open(FIFO_CAN, 'rb', 0) as fifo_can:
@@ -86,6 +90,10 @@ def ant_reader(writer):
 
 
 def vid_writer(reader):
+    """
+    reads the internal video Pipe and then send the read messages on the FIFO
+    directed to the video module
+    """
     fifo_vid = open(FIFO_VID, 'wb', 0)
     log.info(f"VID WRITER - {FIFO_VID} opened")
 
@@ -103,6 +111,15 @@ def vid_writer(reader):
 
 
 def can_manager(reader_ant, writer_vid):
+    """
+    manages CAN Bus communication with other boards, both reading and writing on
+    the bus
+    :param reader_ant: object for the internal ant Pipe, it is used for reading
+                       the given pipe, then send the received data on the CAN
+                       Bus
+    :param writer_vid: object for the internal Pipe, it is used for
+                       writing on the video Pipe what it is read on the CAN Bus
+    """
     dbc = cantools.database.load_file('./policanbent.dbc')
     bus = can.Bus(
             interface='socketcan',
