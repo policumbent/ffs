@@ -209,7 +209,7 @@ class Overlay:
                 cv2.putText(
                     overlay,
                     msg,
-                    ((self.screen_width - elem_dim[0]) // 2, self.bottom_vert_org[i]),
+                    ((self.screen_width - elem_dim[0]) // 2, self.bottom_middle_org[i]),
                     self.font,
                     self.font_scale,
                     element.color,
