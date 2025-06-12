@@ -1,0 +1,8 @@
+{
+    "mode": "ENDURANCE_MODE",
+    "comments": {
+        "TEST_MODE": "prints values from 0 to 10 on the screen to check that everything is working",
+        "RUN_MODE": "normal mode used for length runs",
+        "ENDURANCE_MODE": "mode used for endurance runs, such as the hour record, prints all the data in RUN_MODE and the time elapsed from booting"
+    }
+}

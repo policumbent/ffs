@@ -1,6 +1,6 @@
 import os, sys, stat
 from signal import pause
-from time import sleep
+from time import sleep, time
 
 import libcamera
 from picamera2 import Picamera2, Preview
@@ -14,9 +14,6 @@ import json
 # append into path the libs folder, so that Python will find them
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'libs')))
 from log import log
-
-
-TEST_MODE = 0
 
 
 # useful paths as strings
@@ -36,26 +33,39 @@ else:
     os.mkfifo(FIFO)
 
 
-# overlay elements declaration
-speed = OverlayElement("speed", unit=" kph", color=colors["blue"])
-distance = OverlayElement("distance", unit=" m", color=colors["white"])
-power = OverlayElement("power", unit=" W", color=colors["blue"])
-heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["red"])
-cadence = OverlayElement("cadence", unit=" rpm", color=colors["green"])
-gear = OverlayElement("gear", color=colors["white"])
+def generate_overlay_positioning(MODE):
+    # overlay elements declaration
+    speed = OverlayElement("speed", unit=" kph", color=colors["white"])
+    distance = OverlayElement("distance", unit=" m", color=colors["white"])
+    power = OverlayElement("power", unit=" W", color=colors["white"])
+    heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["white"])
+    cadence = OverlayElement("cadence", unit=" rpm", color=colors["white"])
+    gear = OverlayElement("gear", color=colors["white"])
 
-test_mode = OverlayElement("test", val="TEST")
+    test_mode = OverlayElement("test", val="TEST", color=colors["white"])
 
-# overlay element positioning
-top_left_overlay = [speed, heartrate]
-top_right_overlay = [power, cadence]
-bottom_middle_overlay = [gear]
-bottom_right_overlay = [distance]
+    time_elapsed = OverlayElement("time", color=colors["white"])
 
-if TEST_MODE:
-    top_middle_overlay = [test_mode]
-else:
-    top_middle_overlay = []
+    if MODE == "ENDURANCE_MODE":
+        top_left_overlay = [time_elapsed, speed, distance]
+        top_right_overlay = [heartrate, power, cadence]
+        bottom_middle_overlay = [gear]
+        bottom_right_overlay = []
+        bottom_left_overlay = []
+    else:
+        top_left_overlay = [speed, distance]
+        top_right_overlay = [heartrate, power, cadence]
+        bottom_middle_overlay = [gear]
+        bottom_right_overlay = []
+        bottom_left_overlay = []
+
+    if MODE == "TEST_MODE":
+        top_middle_overlay = [test_mode]
+    else:
+        top_middle_overlay = []
+
+    return (top_left_overlay, top_middle_overlay, top_right_overlay,
+            bottom_left_overlay, bottom_middle_overlay, bottom_right_overlay)
 
 
 def test_mode(picam, overlay_obj):
@@ -98,8 +108,11 @@ def update_values(type, val):
     elif type == "gear":
         gear.set_value(val)
 
+    elif type == "time":
+        time.set_time(val)
 
-def fifo_mode(picam, overlay_obj):
+
+def run_mode(picam, overlay_obj):
     """
     takes FIFO_TO_VIDEO as asynchronous data source and updates the overlay
     :param picam: Picamera2 object
@@ -110,10 +123,10 @@ def fifo_mode(picam, overlay_obj):
     while True:
         try:
             with open(FIFO, 'rb', 0) as fifo:
-                log.info(f"FIFO MODE - {FIFO} opened")
+                log.info(f"RUN MODE - {FIFO} opened")
 
                 for line in fifo:
-                    log.info(f"FIFO MODE, READING - {line.decode()}")
+                    log.info(f"RUN MODE, READING - {line.decode()}")
                     try:    
                         sensor, value = line.decode().rstrip().split(":")
                         log.info(f"{sensor}: {value}")
@@ -121,9 +134,41 @@ def fifo_mode(picam, overlay_obj):
                         overlay = overlay_obj.update_overlay()
                         picam.set_overlay(overlay)
                     except Exception as e:
-                        log.err(f"FIFO MODE: {e}")
+                        log.err(f"RUN MODE: {e}")
         except Exception as e:
-            log.err(f"FIFO MODE: {e}")
+            log.err(f"RUN MODE: {e}")
+
+
+def endurance_mode(picam, overlay_obj):
+    """
+    takes FIFO_TO_VIDEO as asynchronous data source and updates the overlay,
+    with time elapsed
+    :param picam: Picamera2 object
+    :param overlay_obj: overlay object created in the main function
+    """
+    log.info(f"ENDURANCE MODE STARTED")
+
+    start_time = time()
+
+    while True:
+        try:
+            update_value("time", (time() - start_time))
+
+            with open(FIFO, 'rb', 0) as fifo:
+                log.info(f"ENDURANCE MODE - {FIFO} opened")
+
+                for line in fifo:
+                    log.info(f"ENDURANCE MODE, READING - {line.decode()}")
+                    try:    
+                        sensor, value = line.decode().rstrip().split(":")
+                        log.info(f"{sensor}: {value}")
+                        update_values(sensor, value)
+                        overlay = overlay_obj.update_overlay()
+                        picam.set_overlay(overlay)
+                    except Exception as e:
+                        log.err(f"ENDURANCE MODE: {e}")
+        except Exception as e:
+            log.err(f"ENDURANCE MODE: {e}")
 
 
 def json_to_dict(path: str):
@@ -142,8 +187,11 @@ def json_to_dict(path: str):
 
 
 def main():
+    mode_conf = json_to_dict(f"{config_path}/mode.json")
     video_conf = json_to_dict(f"{config_path}/video.json")
     camera_conf = json_to_dict(f"{config_path}/camera.json")
+
+    MODE = mode_conf["mode"]
 
     cam_name = video_conf["camera_name"]
 
@@ -181,24 +229,29 @@ def main():
     )
     picam.start()
 
+    overlay_pos = generate_overlay_positioning(MODE)
+
     # overlay declaration
     overlay_obj = Overlay(
         video_conf["screen"]["width"],
         video_conf["screen"]["height"],
         thickness=video_conf["overlay"]["thickness"],
         rotation=video_conf["overlay"]["rotation"],
-        top_left=top_left_overlay,
-        top_middle=top_middle_overlay,
-        top_right=top_right_overlay,
-        bottom_middle=bottom_middle_overlay,
-        bottom_right=bottom_right_overlay
+        top_left=overlay_pos.top_left_overlay,
+        top_middle=overlay_pos.top_middle_overlay,
+        top_right=overlay_pos.top_right_overlay,
+        bottom_left=overlay_pos.bottom_left_overlay,
+        bottom_middle=overlay_pos.bottom_middle_overlay,
+        bottom_right=overlay_pos.bottom_right_overlay
     )
 
-    if TEST_MODE:
+    if MODE == "TEST_MODE":
         test_mode(picam, overlay_obj)
-    else:
+    elif MODE == "RUN_MODE":
         # hybrid solution with pipe still in bob
-        fifo_mode(picam, overlay_obj)
+        run_mode(picam, overlay_obj)
+    elif MODE == "ENDURANCE_MODE":
+        endurance_mode(picam, overlay_obj)
 
 
 if __name__ == '__main__':

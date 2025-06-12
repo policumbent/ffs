@@ -4,7 +4,7 @@
         "width": 1024,
         "height": 600
     },
-    "hflip": 1,
+    "hflip": 0,
     "vflip": 0,
     "overlay": {
         "thickness": 3,

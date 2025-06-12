@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+from math import floor
 
 
 colors = {
@@ -30,6 +31,15 @@ class OverlayElement:
         :param val: new value
         """
         self.val = round(float(val))
+
+
+    def set_time(self, val):
+        """
+        :param val: time elapsed in seconds
+        """
+        min = floor(float(val / 60))
+        sec = val % 60
+        self.val = f"{min}:{sec}"
 
 
 class Overlay:
