@@ -125,7 +125,7 @@ def run_mode(picam, overlay_obj):
     :param picam: Picamera2 object
     :param overlay_obj: overlay object created in the main function
     """
-    log.info(f"FIFO MODE STARTED")
+    log.info(f"RUN MODE STARTED")
 
     while True:
         try:
@@ -171,9 +171,10 @@ def endurance_mode(picam, overlay_obj):
                         log.info(f"{sensor}: {value}")
                         update_values(sensor, value)
                         overlay = overlay_obj.update_overlay()
-                        picam.set_overlay(overlay)
                     except Exception as e:
                         log.err(f"ENDURANCE MODE: {e}")
+            
+            picam.set_overlay(overlay)
         except Exception as e:
             log.err(f"ENDURANCE MODE: {e}")
 

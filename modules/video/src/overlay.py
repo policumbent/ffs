@@ -104,7 +104,7 @@ class Overlay:
         data by iterating all the position lists (top_left, top_middle, etc...)
         :return: overlay frame 
         """
-        overlay = np.zeros((self.screen_height, self.screen_width, 4), dtype=np.uint8) * 255
+        overlay = np.zeros((self.screen_height, self.screen_width, 4), dtype=np.uint8)
 
         if len(self.top_left) > 0:
             for i, element in enumerate(self.top_left):
