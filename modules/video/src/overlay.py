@@ -94,7 +94,7 @@ class Overlay:
             self.top_vert_org.append(top_left_org[1] + i * offset)
 
         self.bottom_vert_org = []
-        for i in range(max(len(self.bottom_left), len(self.bottom_right), len(self.bottom_middle)):
+        for i in range(max(len(self.bottom_left), len(self.bottom_right), len(self.bottom_middle))):
             self.bottom_vert_org.append(bottom_left_org[1] - i * offset)
 
 
