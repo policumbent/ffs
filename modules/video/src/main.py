@@ -244,6 +244,8 @@ def main():
     )
     picam.start()
 
+    sleep(1)
+
     overlay_pos = generate_overlay_positioning(MODE)
 
     # overlay declaration
