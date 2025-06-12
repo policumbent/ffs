@@ -146,6 +146,16 @@ def run_mode(picam, overlay_obj):
             log.err(f"RUN MODE: {e}")
 
 
+def time_sending(picam, overlay_obj):
+    start_time = time()
+
+    while True:
+        update_values("time", (time() - start_time))
+        overlay = overlay_obj.update_overlay()
+        picam.set_overlay(overlay)
+        sleep(0.5)
+
+
 def endurance_mode(picam, overlay_obj):
     """
     takes FIFO_TO_VIDEO as asynchronous data source and updates the overlay,
@@ -155,12 +165,10 @@ def endurance_mode(picam, overlay_obj):
     """
     log.info(f"ENDURANCE MODE STARTED")
 
-    start_time = time()
+    time_sending(picam, overlay_obj)
 
     while True:
         try:
-            update_values("time", (time() - start_time))
-
             with open(FIFO, 'rb', 0) as fifo:
                 log.info(f"ENDURANCE MODE - {FIFO} opened")
 
@@ -171,10 +179,9 @@ def endurance_mode(picam, overlay_obj):
                         log.info(f"{sensor}: {value}")
                         update_values(sensor, value)
                         overlay = overlay_obj.update_overlay()
+                        picam.set_overlay(overlay)
                     except Exception as e:
                         log.err(f"ENDURANCE MODE: {e}")
-            
-            picam.set_overlay(overlay)
         except Exception as e:
             log.err(f"ENDURANCE MODE: {e}")
 
