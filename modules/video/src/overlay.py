@@ -38,7 +38,7 @@ class OverlayElement:
         :param val: time elapsed in seconds
         """
         min = floor(float(val / 60))
-        sec = val % 60
+        sec = floor(val % 60)
         self.val = f"{min}:{sec}"
 
 
