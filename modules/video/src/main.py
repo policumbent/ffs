@@ -64,8 +64,14 @@ def generate_overlay_positioning(MODE):
     else:
         top_middle_overlay = []
 
-    return (top_left_overlay, top_middle_overlay, top_right_overlay,
-            bottom_left_overlay, bottom_middle_overlay, bottom_right_overlay)
+    return {
+        "top_left_overlay": top_left_overlay,
+        "top_middle_overlay": top_middle_overlay,
+        "top_right_overlay": top_right_overlay,
+        "bottom_left_overlay": bottom_left_overlay,
+        "bottom_middle_overlay": bottom_middle_overlay,
+        "bottom_right_overlay": bottom_right_overlay
+    }
 
 
 def test_mode(picam, overlay_obj):
@@ -237,12 +243,12 @@ def main():
         video_conf["screen"]["height"],
         thickness=video_conf["overlay"]["thickness"],
         rotation=video_conf["overlay"]["rotation"],
-        top_left=overlay_pos.top_left_overlay,
-        top_middle=overlay_pos.top_middle_overlay,
-        top_right=overlay_pos.top_right_overlay,
-        bottom_left=overlay_pos.bottom_left_overlay,
-        bottom_middle=overlay_pos.bottom_middle_overlay,
-        bottom_right=overlay_pos.bottom_right_overlay
+        top_left=overlay_pos["top_left_overlay"],
+        top_middle=overlay_pos["top_middle_overlay"],
+        top_right=overlay_pos["top_right_overlay"],
+        bottom_left=overlay_pos["bottom_left_overlay"],
+        bottom_middle=overlay_pos["bottom_middle_overlay"],
+        bottom_right=overlay_pos["bottom_right_overlay"]
     )
 
     if MODE == "TEST_MODE":
