@@ -33,19 +33,20 @@ else:
     os.mkfifo(FIFO)
 
 
+# overlay elements declaration
+speed = OverlayElement("speed", unit=" kph", color=colors["white"])
+distance = OverlayElement("distance", unit=" m", color=colors["white"])
+power = OverlayElement("power", unit=" W", color=colors["white"])
+heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["white"])
+cadence = OverlayElement("cadence", unit=" rpm", color=colors["white"])
+gear = OverlayElement("gear", color=colors["white"])
+
+test_mode = OverlayElement("test", val="TEST", color=colors["white"])
+
+time_elapsed = OverlayElement("time", color=colors["white"])
+
+
 def generate_overlay_positioning(MODE):
-    # overlay elements declaration
-    speed = OverlayElement("speed", unit=" kph", color=colors["white"])
-    distance = OverlayElement("distance", unit=" m", color=colors["white"])
-    power = OverlayElement("power", unit=" W", color=colors["white"])
-    heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["white"])
-    cadence = OverlayElement("cadence", unit=" rpm", color=colors["white"])
-    gear = OverlayElement("gear", color=colors["white"])
-
-    test_mode = OverlayElement("test", val="TEST", color=colors["white"])
-
-    time_elapsed = OverlayElement("time", color=colors["white"])
-
     if MODE == "ENDURANCE_MODE":
         top_left_overlay = [time_elapsed, speed, distance]
         top_right_overlay = [heartrate, power, cadence]
