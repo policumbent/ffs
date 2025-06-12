@@ -115,7 +115,7 @@ def update_values(type, val):
         gear.set_value(val)
 
     elif type == "time":
-        time.set_time(val)
+        time_elapsed.set_time(val)
 
 
 def run_mode(picam, overlay_obj):
