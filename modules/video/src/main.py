@@ -158,7 +158,7 @@ def endurance_mode(picam, overlay_obj):
 
     while True:
         try:
-            update_value("time", (time() - start_time))
+            update_values("time", (time() - start_time))
 
             with open(FIFO, 'rb', 0) as fifo:
                 log.info(f"ENDURANCE MODE - {FIFO} opened")
