@@ -170,7 +170,8 @@ def endurance_mode(picam, overlay_obj):
     """
     log.info(f"ENDURANCE MODE STARTED")
 
-    thread_time_sending = Thread(target=time_sending, args=(picam, overlay_obj,)
+    thread_time_sending = Thread(target=time_sending, args=(picam, overlay_obj,))
+    thread_time_sending.start()
 
     while True:
         try:
@@ -189,7 +190,7 @@ def endurance_mode(picam, overlay_obj):
                         log.err(f"ENDURANCE MODE: {e}")
         except Exception as e:
             log.err(f"ENDURANCE MODE: {e}")
-
+            
 
 def json_to_dict(path: str):
     res = dict()
