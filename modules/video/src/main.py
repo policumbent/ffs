@@ -113,7 +113,9 @@ def update_values(type, val):
     elif type == "cadence":
         cadence.set_value(val)
 
-    elif type == "gear" and val != 0:
+    elif type == "gear":
+        if val == 0:
+            gear.set_value(None)
         gear.set_value(val)
 
     elif type == "time":
