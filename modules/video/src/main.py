@@ -113,7 +113,7 @@ def update_values(type, val):
     elif type == "cadence":
         cadence.set_value(val)
 
-    elif type == "gear":
+    elif type == "gear" and val != 0:
         gear.set_value(val)
 
     elif type == "time":
@@ -190,7 +190,7 @@ def endurance_mode(picam, overlay_obj):
                         log.err(f"ENDURANCE MODE: {e}")
         except Exception as e:
             log.err(f"ENDURANCE MODE: {e}")
-            
+
 
 def json_to_dict(path: str):
     res = dict()
