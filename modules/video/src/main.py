@@ -1,6 +1,7 @@
 import os, sys, stat
 from signal import pause
 from time import sleep, time
+from threading import Thread
 
 import libcamera
 from picamera2 import Picamera2, Preview
@@ -169,7 +170,7 @@ def endurance_mode(picam, overlay_obj):
     """
     log.info(f"ENDURANCE MODE STARTED")
 
-    time_sending(picam, overlay_obj)
+    thread_time_sending = Thread(target=time_sending, args=(picam, overlay_obj,)
 
     while True:
         try:
