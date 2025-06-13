@@ -145,6 +145,8 @@ def can_manager(bus, reader_ant, writer_vid):
 
 
 def main():
+    sp.call("./can_reconnect.sh")
+
     flg = 0
     while flg == 0:
         try:
