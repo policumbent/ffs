@@ -112,7 +112,7 @@ def vid_writer(reader):
                 log.err(f"VID WRITER: {e}")
 
 
-def can_manager(reader_ant, writer_vid):
+def can_manager(bus, reader_ant, writer_vid):
     """
     manages CAN Bus communication with other boards, both reading and writing on the bus
     :param reader_ant: reader of the ant Pipe, read data are then sent to can_msg_manager to send them on the CAN Bus
@@ -120,12 +120,7 @@ def can_manager(reader_ant, writer_vid):
                        FIFO
     """
     dbc = cantools.database.load_file('./policanbent.dbc')
-    bus = can.Bus(
-            interface='socketcan',
-            channel='can0',
-            bitrate=500000,
-            receive_own_messages=False
-    )
+    
 
     sensors_to_dbc = json_to_dict(f"{config_path}/sensors_to_dbc.json")
     dbc_to_sensors = json_to_dict(f"{config_path}/dbc_to_sensors.json")
@@ -150,13 +145,29 @@ def can_manager(reader_ant, writer_vid):
 
 
 def main():
+    flg = 0
+    while flg == 0:
+        try:
+            bus = can.Bus(
+                    interface='socketcan',
+                    channel='can0',
+                    bitrate=500000,
+                    receive_own_messages=False
+            )
+
+            flg = 1
+        except:
+            log.err(f"CAN MANAGER: no CAN connection, retrying...")
+            sp.call("./can_reconnect.sh")
+        
+
     thread_can_logger = Thread(target=can_logger)
     thread_can_logger.start()
 
     reader_ant, writer_ant = Pipe(duplex=False)
     reader_vid, writer_vid = Pipe(duplex=False)
 
-    can_manager_proc = Process(target=can_manager, args=(reader_ant, writer_vid,))
+    can_manager_proc = Process(target=can_manager, args=(bus, reader_ant, writer_vid,))
     vid_writer_proc  = Process(target=vid_writer, args=(reader_vid,))
     ant_reader_proc  = Process(target=ant_reader, args=(writer_ant,))
 
