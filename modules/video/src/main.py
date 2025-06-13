@@ -150,7 +150,11 @@ def time_sending(picam, overlay_obj):
     start_time = time()
 
     while True:
-        update_values("time", (time() - start_time))
+        actual_time = time() - start_time
+        update_values("time", actual_time)
+
+        log.info(f"TIME SENDING: {actual_time}")
+
         overlay = overlay_obj.update_overlay()
         picam.set_overlay(overlay)
         sleep(0.5)
