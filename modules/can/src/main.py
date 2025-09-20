@@ -130,16 +130,20 @@ def can_manager(bus, reader_ant, writer_vid):
 
     while True:
         if reader_ant.poll():
-            data = reader.recv()    # data encoded as a two elements tuple in
-                                    # ant_reader:
-                                    #  - data[0] -> sensor
-                                    #  - data[1] -> value
+            data = reader_ant.recv()    # data encoded as a two elements tuple in
+                                        # ant_reader:
+                                        #  - data[0] -> sensor
+                                        #  - data[1] -> value
+
+            log.info(f"ANT READ: {data[0]}:{data[1]}\n")
 
             id_name = sensors_to_dbc[data[0]][0]
             sig_name = sensors_to_dbc[data[0]][1]
-            pl = dbc.encode_message(id_name, {sig_name: data[1]})
-            id_frame = dbc.get_message_by_name[id_name].frame_id
-            can_frame = can.Message(arbitration_id=id_frame, data=pl)
+            pl = dbc.encode_message(id_name, {sig_name: float(data[1])})
+            id_frame = dbc.get_message_by_name(id_name).frame_id
+            can_frame = can.Message(arbitration_id=id_frame, is_extended_id=False, data=pl)
+
+            bus.send(can_frame, timeout=0.2)
 
     return
 
