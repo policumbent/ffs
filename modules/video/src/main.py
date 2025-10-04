@@ -35,16 +35,16 @@ else:
 
 
 # overlay elements declaration
-speed = OverlayElement("speed", unit=" kph", color=colors["white"])
-distance = OverlayElement("distance", unit=" m", color=colors["white"])
-power = OverlayElement("power", unit=" W", color=colors["white"])
-heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["white"])
-cadence = OverlayElement("cadence", unit=" rpm", color=colors["white"])
-gear = OverlayElement("gear", color=colors["white"])
+speed = OverlayElement("speed", unit=" kph", color=colors["red"])
+distance = OverlayElement("distance", unit=" m", color=colors["red"])
+power = OverlayElement("power", unit=" W", color=colors["red"])
+heartrate = OverlayElement("heartrate", unit=" bpm", color=colors["red"])
+cadence = OverlayElement("cadence", unit=" rpm", color=colors["red"])
+gear = OverlayElement("gear", color=colors["red"])
 
-test_overlay = OverlayElement("test", val="TEST", color=colors["white"])
+test_overlay = OverlayElement("test", val="TEST", color=colors["red"])
 
-time_elapsed = OverlayElement("time", color=colors["white"])
+time_elapsed = OverlayElement("time", color=colors["red"])
 
 
 def generate_overlay_positioning(MODE):
