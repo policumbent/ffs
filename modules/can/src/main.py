@@ -20,6 +20,10 @@ ffs_path = f"{home_path}/ffs"
 config_path = f"{ffs_path}/config"
 
 
+mode_conf = json_to_dict(f"{config_path}/mode.json")
+MODE = mode_conf["mode"]
+
+
 # fifo to can creation
 FIFO_TO_CAN = "fifo_to_can"
 FIFO_CAN = f"{home_path}/bob/{FIFO_TO_CAN}"
@@ -31,18 +35,20 @@ if os.path.exists(FIFO_CAN):
 else:
     os.mkfifo(FIFO_CAN)
 
-# fifo to video creation
-FIFO_TO_VIDEO = "fifo_to_video"
-FIFO_VID = f"{home_path}/bob/{FIFO_TO_VIDEO}"
+
+if MODE != "NOSCREEN_MODE":
+    # fifo to video creation
+    FIFO_TO_VIDEO = "fifo_to_video"
+    FIFO_VID = f"{home_path}/bob/{FIFO_TO_VIDEO}"
+
+    if os.path.exists(FIFO_VID):
+        if not stat.S_ISFIFO(os.stat(FIFO_VID).st_mode):
+            os.remove(FIFO_VID)
+            os.mkfifo(FIFO_VID)
+    else:
+        os.mkfifo(FIFO_VID)
 
 can_writers = ["power", "cadence", "ant_speed", "ant_distance", "heartrate"]
-
-if os.path.exists(FIFO_VID):
-    if not stat.S_ISFIFO(os.stat(FIFO_VID).st_mode):
-        os.remove(FIFO_VID)
-        os.mkfifo(FIFO_VID)
-else:
-    os.mkfifo(FIFO_VID)
 
 
 def can_logger():
@@ -166,24 +172,24 @@ def main():
             log.err(f"CAN MANAGER: no CAN connection, retrying...")
             sp.call("./can_reconnect.sh")
         
-
     thread_can_logger = Thread(target=can_logger)
     thread_can_logger.start()
 
     reader_ant, writer_ant = Pipe(duplex=False)
-    reader_vid, writer_vid = Pipe(duplex=False)
 
     can_manager_proc = Process(target=can_manager, args=(bus, reader_ant, writer_vid,))
-    vid_writer_proc  = Process(target=vid_writer, args=(reader_vid,))
-    ant_reader_proc  = Process(target=ant_reader, args=(writer_ant,))
-
     can_manager_proc.start()
-    vid_writer_proc.start()
-    ant_reader_proc.start()
-
     can_manager_proc.join()
-    vid_writer_proc.join()
+
+    ant_reader_proc  = Process(target=ant_reader, args=(writer_ant,))
+    ant_reader_proc.start()
     ant_reader_proc.join()
+
+    if MODE != "NOSCREEN_MODE":
+        reader_vid, writer_vid = Pipe(duplex=False)
+        vid_writer_proc = Process(target=vid_writer, args=(reader_vid,))
+        vid_writer_proc.start()
+        vid_writer_proc.join()
 
 
 if __name__ == '__main__':

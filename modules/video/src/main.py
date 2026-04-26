@@ -216,6 +216,9 @@ def main():
 
     MODE = mode_conf["mode"]
 
+    if MODE == "NOSCREEN_MODE":
+        return
+
     cam_name = video_conf["camera_name"]
 
     picam = Picamera2()
