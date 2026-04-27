@@ -14,6 +14,21 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from log import log
 
 
+def json_to_dict(path: str):
+    res = dict()
+    try: 
+        with open(path) as file:
+            try:
+                res = json.load(file)
+            except Exception as json_err:
+                log.err(f"CAN (json_to_dict) - JSON: {json_err}")
+
+    except Exception as file_err:
+        log.err(f"CAN (json_to_dict) - FILE: {file_err}")
+
+    return res
+
+
 # useful paths as strings
 home_path = os.getenv("HOME")
 ffs_path = f"{home_path}/ffs"
@@ -53,21 +68,6 @@ can_writers = ["power", "cadence", "ant_speed", "ant_distance", "heartrate"]
 
 def can_logger():
     sp.call("./can_logger.sh")
-
-
-def json_to_dict(path: str):
-    res = dict()
-    try: 
-        with open(path) as file:
-            try:
-                res = json.load(file)
-            except Exception as json_err:
-                log.err(f"CAN (json_to_dict) - JSON: {json_err}")
-
-    except Exception as file_err:
-        log.err(f"CAN (json_to_dict) - FILE: {file_err}")
-
-    return res
 
 
 def ant_reader(writer):
