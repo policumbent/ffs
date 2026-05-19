@@ -1,6 +1,6 @@
 import os, sys, stat
 from signal import pause
-from time import sleep, time
+from time import sleep, monotonic
 from threading import Thread
 
 import libcamera
@@ -150,10 +150,10 @@ def run_mode(picam, overlay_obj):
 
 
 def time_sending(picam, overlay_obj):
-    start_time = time()
+    start_time = monotonic()
 
     while True:
-        actual_time = time() - start_time
+        actual_time = monotonic() - start_time
         update_values("time", actual_time)
 
         log.info(f"TIME SENDING: {actual_time}")
